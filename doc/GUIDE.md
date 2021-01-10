@@ -124,5 +124,78 @@ pip3 install --user virtualenv
 ```
 
 We then want to run the command
-This will create a virtual environment in your project root. It will be in the folder
+
+```bash
+virtualenv venv
+```
+
+This will create a virtual environment in your project root. It will be in the folder `venv` located in the project root. I *strongly* recommend adding `/venv` to your `.gitignore` file. This will save a lot of headaches down the road. When you migrate your project to your flip, you'll create a new virtual environment there. If you want to package your project up for Heroku, doing this now will save you work down the road.
+
+To activate the virtual environment (and we need to do this everytime we close out of the terminal or log off the computer):
+
+```bash
+source ./venv/bin/activate
+```
+
+If you want to verify if your virtual environment is currently active
+
+```bash
+which python3
+# <path_to_your_repo_folder>/venv/bin/python3
+```
+
+If `which` outputs something like `usr/bin/python3`, you did something wrong. Go back through the steps and verify.
+
+If you ever want to leave the virtual environment, that is easier yet
+
+```bash
+deactivate
+```
+
+Always remember to have your virtual environment running when working on your project.
+
+### Install Flask and its Dependencies
+
+This one is pretty straight forward. In your terminal, make sure your virtual environment is active if you have one, and run the following command
+
+```bash
+pip3 install flask-mysqldb
+```
+
+You'll see a bunch of text fly across the screen. Let's confirm the install went OK by typing
+
+```bash
+flask --version
+```
+
+You should see some output that looks like this!
+![flask version in terminal](./doc_img/flask_version.png)
+
+If not, go back and verify you followed the steps correctly.
+
+## Step 3 - Let's Build the Project
+
+### Structure
+
+Best to get this out of the way up front. You'll need to create a few folders. Get your repo organized in the following manner:
+
+```
+.
+├── .gitignore 
+├── README.md
+├── app.py            
+├── venv               <= Should be in your .gitignore
+├── templates
+│    └ main.j2          <= .j2 or .jinja2 is acceptable
+└── static           
+     ├ css
+     ├ js
+     └ img
+```
+
+If the folders do not exist, create them. If the files do not exist, create them with the correct name and extension, and just leave them blank for now.
+
+### App.py
+
+Finally, we can start writing our web app. Trust me, all the setup was worth it. Open your app.py.
 
