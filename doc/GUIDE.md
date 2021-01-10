@@ -199,3 +199,31 @@ If the folders do not exist, create them. If the files do not exist, create them
 
 Finally, we can start writing our web app. Trust me, all the setup was worth it. Open your app.py.
 
+Here is the absolute *bare* minimum code needed to get some output:
+
+```python
+from flask import Flask
+import os
+
+# Configuration
+
+app = Flask(__name__)
+
+# Routes 
+
+@app.route('/')
+def root():
+    return "Hello World!"
+
+# Listener
+
+if __name__ == "__main__":
+    port = int(os.environ.get('PORT', 9113)) 
+    #                                 ^^^^
+    #              You can replace this number with any valid port
+    
+    app.run(host='0.0.0.0', port=2455) 
+```
+
+Ok, techincally, it's not, you could do it with less. This sets us up for success later though, particularly if you end up deploying on Heroku.
+
