@@ -213,17 +213,66 @@ app = Flask(__name__)
 
 @app.route('/')
 def root():
-    return "Hello World!"
+    return "Welcome to the OSU CS 340 - Flask Tutorial!"
 
 # Listener
 
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 9113)) 
+    port = int(os.environ.get('PORT', 9112)) 
     #                                 ^^^^
     #              You can replace this number with any valid port
     
-    app.run(host='0.0.0.0', port=2455) 
+    app.run(port=port) 
 ```
 
 Ok, techincally, it's not, you could do it with less. This sets us up for success later though, particularly if you end up deploying on Heroku.
 
+Once you have your `app.py` filled out, let's verify that it works! Hop on over to the terminal:
+
+```bash
+python3 app.py
+
+# app.py will be whatever you named your .py file if it wasn't 'app'
+```
+
+And you should see some output:
+
+![Running the app for the first time](./doc_img/running_the_app_first_time.png)
+
+I should now be able to go into my browser, and enter that web address.
+
+![Running the app for the first time in the browser](./doc_img/running_the_app_first_time_browser.png)
+
+At this point, Flask is working, and our computer can see its output.
+
+A very useful option in Flask is to change the `app.run()` call in the following manner:
+
+```python
+app.run(port=port, debug=True)
+```
+
+This will force the server to reload whenever changes are made to your project, so that way you don't have to manually kill the process and restart it every time.
+
+## Templates
+
+Ok, so sending a single string of text to the screen, kind of boring. I know. That's where a templating engine comes into play. With Flask, we will use Jinja2. It's actually already part of the Flask package and sufficient to use on this project.
+
+Navigate over to your `/templates` folder and open up the `main.j2` that you created.
+
+The `.j2` extension is not mandatory, but makes it simple. You can also use `.jinja2` or `.jinja` if you really want to type it out every time; just keep it consistent in your project.
+
+Throw some HTML in there. Yes, that's all a template is, just HTML. There is some special syntax that we can use in Jinja 2 that allows us to dynamically display data, but let's just get our template engine up and running for now.
+
+```html
+<html>
+<head>
+    <title>OSU - CS 340 - Introduction to Databases - Flask Demo Project
+</head>
+<body>
+    <h1>CS 340 - Introduction to Databases</h1>
+    <p>This is a demonstration project created to show students how to create a Flask app and connect it to a MySQL database.
+</body>
+</html>
+```
+
+Now we have that, navigate over to `app.py` and we need to import 
