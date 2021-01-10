@@ -77,3 +77,52 @@ Once you have created a new repo and got your link, fire up your terminal. Navig
 
 ```git clone <link_you_copied_from_GitHub>```
 
+You can then check to see that the clone was successful by typing the following command in your terminal.
+
+```ls```
+
+You should see whatever was in the folder before AND a new folder with the same name as your repo.
+
+![ls command after cloning](./doc_img/github_post_clone_ls.png)
+
+You can now navigate to the folder by:
+
+```cd <name_of_your_new_folder>```
+
+You will now be in your new folder created by cloning the repo.
+
+![cd to new repo created by git clone](./doc_img/github_post_clone_cd.png)
+
+> Your terminal prompt is likely to look a bit different than what you see in these images. I have customized mine. The commands on your terminal will still yield the same output, they just might be different colors or fonts.
+
+### Create a .gitignore File
+
+There are going to be certain things we don't want to submit to our repo, such as credentials, virtual environments, etc.
+
+Create a file called `.gitignore` in the root of your directory.
+
+You can add individual paths, files and folders on a line by line basis in this file. Git will ignore each of those paths, files or folders when keeping track of your repo. For VS Code users, there is almost always a folder called `.vscode` that gets created in your project root. You can add the line
+
+```bash
+/.vscode
+```
+
+to your `.gitignore` file. Whenver you manipulate your git repository, git will not even look in that folder or track it for changes. We will use this file later on.
+
+### Python Virtual Environment (Optional but Recommended)
+
+The short version is that you will be installing a few Python packages to support your web application. But we don't want to muddy up the installation of Python on our computer in the event something goes wrong. To this end, we can use Python "virtual environments" to essentially act as a stand-alone installation of Python dedicated solely to our web application.
+
+Fire up your terminal, navigate to the root of your project folder (the top level of your repo folder):
+
+```bash
+# On your machine:
+pip3 install virtualenv
+
+# If logged into the school's flip servers
+pip3 install --user virtualenv
+```
+
+We then want to run the command
+This will create a virtual environment in your project root. It will be in the folder
+
