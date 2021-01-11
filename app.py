@@ -7,8 +7,7 @@ app = Flask(__name__)
 
 # Temporary
 
-people =
-[
+people = [
 {
     "name": "Thomas",
     "age": 33,
