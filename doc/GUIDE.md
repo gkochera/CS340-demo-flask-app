@@ -257,6 +257,8 @@ This will force the server to reload whenever changes are made to your project, 
 
 Ok, so sending a single string of text to the screen, kind of boring. I know. That's where a templating engine comes into play. With Flask, we will use Jinja2. It's actually already part of the Flask package and sufficient to use on this project.
 
+### Setting up Templating in Flask
+
 Navigate over to your `/templates` folder and open up the `main.j2` that you created.
 
 The `.j2` extension is not mandatory, but makes it simple. You can also use `.jinja2` or `.jinja` if you really want to type it out every time; just keep it consistent in your project.
@@ -266,7 +268,7 @@ Throw some HTML in there. Yes, that's all a template is, just HTML. There is som
 ```html
 <html>
 <head>
-    <title>OSU - CS 340 - Introduction to Databases - Flask Demo Project
+    <title>OSU - CS 340 - Introduction to Databases - Flask Demo Project</title>
 </head>
 <body>
     <h1>CS 340 - Introduction to Databases</h1>
@@ -275,4 +277,51 @@ Throw some HTML in there. Yes, that's all a template is, just HTML. There is som
 </html>
 ```
 
-Now we have that, navigate over to `app.py` and we need to import 
+Now we have that, navigate over to `app.py` and we need to import `render_template`.
+
+```python
+from flask import Flask, render_template
+```
+
+Then change the `return` value of the route
+```python
+return render_template("main.j2")
+```
+
+It will look like this
+```python
+from flask import Flask, render_template
+import os
+
+# Configuration
+
+app = Flask(__name__)
+
+# Routes 
+
+@app.route('/')
+def root():
+    return render_template("main.j2")
+
+# Listener
+
+if __name__ == "__main__":
+    port = int(os.environ.get('PORT', 9112))
+    app.run(port=port, debug=True)
+```
+
+We can go back to our browser and verify that our changes were good
+
+![Rendering a template with Flask and Jinja 2](./doc_img/flask_rendering_a_template.png)
+
+### Dynamically Displaying Data in a Template
+
+Ok, so how do we get data from the server to display on the page? The power of templating of course! Before we get off to a roll here, I am going to point everyone to a very important link.
+
+[Jinja 2 Template Designer Documents](https://jinja.palletsprojects.com/en/2.11.x/templates/)
+
+Keep these handy when you are working with Jinja templates, they're invaluable.
+
+So a quick demonstration. Create a dictionary in your `app.py`. It can be whatever you want, just have a few key/value pairs in there.
+
+```python

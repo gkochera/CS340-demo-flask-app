@@ -1,15 +1,24 @@
-from flask import Flask
+from flask import Flask, render_template
 import os
 
 # Configuration
 
 app = Flask(__name__)
 
+# Temporary
+
+person1 = {
+    "name": "Thomas",
+    "age": 33,
+    "location": "New Mexico",
+    "favorite_color": "Blue"
+}
+
 # Routes 
 
 @app.route('/')
 def root():
-    return "Welcome to the OSU CS 340 - Flask Tutorial!"
+    return render_template("main.j2")
 
 # Listener
 
