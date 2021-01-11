@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, json
 import database.db_connector as db
 import os
 
@@ -43,6 +43,13 @@ people = [
 @app.route('/')
 def root():
     return render_template("main.j2", people=people)
+
+@app.route('/bsg-people')
+def bsg_people():
+    query = "SELECT * FROM bsg_people;"
+    cursor = db.execute_query(db_connection=db_connection, query=query)
+    results = cursor.fetchall()
+    return render_template("main.j2", bsg_people=results)
 
 # Listener
 
