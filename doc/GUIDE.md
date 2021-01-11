@@ -430,7 +430,7 @@ You remembered your MySQL password? Right? We will need it.
 
 ### Starting the Database
 
-Every installation is going to be different on your local machine. 
+Every installation is going to be different on your local machine. This step may not be necessary but everyone will be different and helps knowing how to do this.
 
 **Windows**
 
@@ -459,5 +459,14 @@ service mysql start
 
 ### Accessing the Database
 
+Let's get connected to the database, open your terminal and enter
 
+```bash
+mysql -u root -p
+```
+You will be prompted for a password. Enter your password and if all went well you will be greeted with a console in MySQL.
+
+![MySQL login at terminal](./doc_img/mysql_first_login.png)
+
+Once you are in here, you can run your SQL queries directly on the database. This is helpful if you are troubleshooting.
 
