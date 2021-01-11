@@ -36,6 +36,7 @@ Dr. Curry and Prof. Safonte for allowing me the time to build the guide and proj
     - [Connecting the Database to Our App](#database-to-app)
 - [Step 6 - Adding Queries to Your App and Displaying Data](#step-6)
     - [Running a Query](#running-a-query)
+- [Conclusion](#conclusion)
 
 # Setup
 
@@ -488,6 +489,8 @@ You remembered your MySQL password? Right? We will need it.
 
 Every installation is going to be different on your local machine. This step may not be necessary but everyone will be different and helps knowing how to do this.
 
+> You will not have to do this on OSUs servers, and it won't work anyway.
+
 **Windows**
 
 1. Open a 'run' window using `Windows Key + R`
@@ -514,7 +517,14 @@ service mysql start
 ```
 
 <a name="accessing-database"></a>
-### Accessing the Database
+## Accessing the Database
+
+The database can be accessed a variety of ways: 
+- MySQL Workbench which comes directly from Oracle themselves
+- DataGrip by JetBrains (which is free while you are a student)
+- PHPMyAdmin which is a web-interface that the school provides us with to access the MySQL database on the school's servers (so it won't work on your local machine).
+- Good ol' command line via the `mysql` command
+There may be others that I haven't mentioned. This guide will use the command line, but it should be easy enough to follow along if you are using one of the other GUI clients.
 
 Let's get connected to the database, open your terminal and enter
 
@@ -607,7 +617,7 @@ db_connection = db.connect_to_database()
 <a name="step-6"></a>
 # Step 6 - Adding Queries to Your App and Displaying Data
 
-Home stretch!
+Home stretch! This section will cover adding queries to your `app.py`, establishing the database connection, running the query, and parsing the return data to present to the browser.
 
 <a name="running-a-query"></a>
 ## Running a Query
@@ -617,4 +627,138 @@ The process for querying data from a database essentially happens in 4 steps.
 1. The user does something in the browser to request a specific set of data 
 2. The server gets that request, crafts or uses a pregenerated query to query the database.
 3. The response from the database is read, manipulated further if necessary
-4. The data is sent back to the page via the `render_template()` method and presented to the user.
+4. The data is sent back to the page via the `render_template()` method and presented to the user; the data can also just be returned as JSON.
+
+In our app.py, we just need to add a new route (you can even use the existing `\` one). Add the route `bsg-people` under the routes section in your `app.py`.
+
+```python
+# Routes 
+
+@app.route('/')
+def root():
+    return render_template("main.j2", people=people)
+
+@app.route('/bsg-people')
+def bsg_people():
+    return "This is the bsg-people route."
+```
+
+> The route `/bsg-people` does NOT have to match the name of the function, in this case, also `def bsg_people()`. It's just a convention used for ease of reading the code.
+> Also, pay careful attention to the difference in the route having a hyphen (-) and the function name having an underscore (_).
+
+Restart your server and navigate to the `/bsg-people` route in your browser.
+
+![Web browser showing the bsg-people route](./doc_img/flask_bsg_people_route.png)
+
+This satisfies Step 1.
+
+Once that is working, we can setup our query and use our previous knowledge of dynamically displaying data to show it on the screen.
+
+In our `app.py` we need to, now craft our query, and dispatch it to the database. We make the following change
+
+```python
+# At the top
+from flask import Flask, render_template, json # add `json`
+
+# In your routes, add this route
+@app.route('/bsg-people')
+def bsg_people():
+
+    # Write the query and save it to a variable
+    query = "SELECT * FROM bsg_people;"
+
+    # The way the interface between MySQL and Flask works is by using an
+    # object called a cursor. Think of it as the object that acts as the
+    # person typing commands directly into the MySQL command line and
+    # reading them back to you when it gets results
+    cursor = db.execute_query(db_connection=db_connection, query=query)
+
+    # The cursor.fetchall() function tells the cursor object to return all
+    # the results from the previously executed
+    #
+    # The json.dumps() function simply converts the dictionary that was
+    # returned by the fetchall() call to JSON so we can display it on the
+    # page.
+    results = json.dumps(cursor.fetchall())
+
+    # Sends the results back to the web browser.
+    return results
+```
+
+Restart (if not in debugging mode) and load up the `bsg-people` route now.
+
+![Data in browswer from bsg-people select query](./doc_img/flask_bsg_people_select_query_success.png)
+
+Confirmation that our webapp can now talk to our database!
+
+> Note: Our data is being returned as a list of dictionaries. This setting can be changed if you would rather receive data back as a tuple of tuples (the default for the library we are using). This is done by changing `db_connector.py` in the following manner
+>
+>```python
+># Return data as a list of dictionaries
+>cursor = db_connection.cursor(MySQLdb.cursors.DictCursor)
+>
+># Return data as a tuple of tuples
+>cursor = db_connection.cursor()
+>```
+>
+> It's personal preference but I prefer dictionaries so I get the column name with each value, the choice is yours though.
+> You'll have to adjust how you render the data in your template slightly with tuples.
+
+In `app.py` we have taken care of Step 2, taking the request and sending it to the database, and Step 3, getting the response, parsing and manipulating it as necessary, and Step 4, dispatching it back to the browswer.
+
+Now to put it through the `render_template()` function. We will need to modify our `templates\main.j2` file. 
+
+```html
+    <table>
+    <thead>
+    <tr>
+        <!-- Iterate through each key in the first entry to get the
+        column name -->
+        {% for key in bsg_people[0].keys() %}
+
+        <!-- Create a <th> tag with the key inside of it, this will be
+        our header row -->
+        <th>{{ key }}</th>
+
+        <!-- End of this for loop -->
+        {% endfor %}
+    </tr>
+    <tbody>
+
+    <!-- Now, iterate through every person in bsg_people -->
+    {% for person in bsg_people %}
+    <tr>
+        <!-- Then iterate through every key in the current person dictionary -->
+        {% for key in person.keys() %}
+
+        <!-- Create a <td> element with the value of that key in it -->
+        <td>{{person[key]}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </table>
+```
+
+We need to make a small adjustment to our `app.py` now. Since, we were sending JSON back to the page directly in our last example. We now want to send the original list of dictionaries to the `render_teplate()` call and return that.
+
+```python
+@app.route('/bsg-people')
+def bsg_people():
+    query = "SELECT * FROM bsg_people;"
+    cursor = db.execute_query(db_connection=db_connection, query=query)
+    results = cursor.fetchall()
+    return render_template("main.j2", bsg_people=results)
+```
+
+> Note: We have removed `json.dumps()` from around the `cursor.fetchall()` call. We do not want to turn this data to JSON when using our template renderer.
+
+Everything should be in order now, restart your server if necessary and navigate to `\bsg-people` in your browser to verify.
+
+![bsg_people query displayed in table on browser](doc_img/flask_bsg_people_table.png)
+
+<a name="conclusion"></a>
+# Conclusion
+
+That is pretty much it! We setup our project, organized it, established a web server, verified it was working, setup our database, loaded it with data, and then used our `app.py` to act as an inteface between the user on our web app and the database.
+
+From here, it's not very difficult to branch out. You can setup forms to capture user input, send it to `app.py` via a GET or POST request and update your database, add new entries, or even delete rows in the database. You can add style and interactivity to your webapp using CSS and JavaScript. The sky is the limit.
