@@ -33,6 +33,9 @@ Dr. Curry and Prof. Safonte for allowing me the time to build the guide and proj
     - [Starting the Database](#starting-database)
     - [Accessing the Database](#accessing-database)
     - [Populating the Database](#populating-database)
+    - [Connecting the Database to Our App](#database-to-app)
+- [Step 6 - Adding Queries to Your App and Displaying Data](#step-6)
+    - [Running a Query](#running-a-query)
 
 # Setup
 
@@ -594,3 +597,24 @@ Back to our `app.py`, we need to import `db_connector`.
 ```python
 import database.db_connector as db
 ```
+
+After we import the `db_connector` module, we also need to create a connection in `app.py`
+
+```python
+db_connection = db.connect_to_database()
+```
+
+<a name="step-6"></a>
+# Step 6 - Adding Queries to Your App and Displaying Data
+
+Home stretch!
+
+<a name="running-a-query"></a>
+## Running a Query
+
+The process for querying data from a database essentially happens in 4 steps.
+
+1. The user does something in the browser to request a specific set of data 
+2. The server gets that request, crafts or uses a pregenerated query to query the database.
+3. The response from the database is read, manipulated further if necessary
+4. The data is sent back to the page via the `render_template()` method and presented to the user.

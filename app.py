@@ -1,6 +1,5 @@
 from flask import Flask, render_template
 import database.db_connector as db
-import database.db_credentials as db_creds
 import os
 
 # Configuration
