@@ -4,6 +4,24 @@
 </head>
 <body>
     <h1>CS 340 - Introduction to Databases</h1>
-    <p>This is a demonstration project created to show students how to create a Flask app and connect it to a MySQL database.
+    <p>This is a demonstration project created to show students how to create a Flask app and connect it to a MySQL database.</p>
+    <table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Location</th>
+        <th>Favorite Language</th>
+    </tr>
+    <tbody>
+    {% for item in people %}
+    <tr>
+        <td>{{item['name']}}</td>
+        <td>{{item['age']}}</td>
+        <td>{{item['location']}}</td>
+        <td>{{item['favorite_color']}}</td>
+    </tr>
+    {% endfor %}
+    </table>
 </body>
 </html>
