@@ -75,11 +75,19 @@ In GitHub, when you are on your repo's homepage, you will see a green button tha
 
 Once you have created a new repo and got your link, fire up your terminal. Navigate to a place where you want to clone your repo to. Cloning creates a new folder (named the same as the repo) so no need to create a new folder just to clone it to. Enter the following command:
 
-```git clone <link_you_copied_from_GitHub>```
+```bash
+git clone <link_you_copied_from_GitHub>
+```
 
 You can then check to see that the clone was successful by typing the following command in your terminal.
 
-```ls```
+```bash
+# Terminal
+ls
+
+# Command Prompt (Windows)
+dir
+```
 
 You should see whatever was in the folder before AND a new folder with the same name as your repo.
 
@@ -126,7 +134,11 @@ pip3 install --user virtualenv
 We then want to run the command
 
 ```bash
+# Linux and Mac
 python3 -m venv ./venv
+
+# Windows Command Prompt
+python -m venv venv
 ```
 
 This will create a virtual environment in your project root. It will be in the folder `venv` located in the project root. I *strongly* recommend adding `/venv` to your `.gitignore` file. This will save a lot of headaches down the road. When you migrate your project to your flip, you'll create a new virtual environment there. If you want to package your project up for Heroku, doing this now will save you work down the road.
@@ -134,14 +146,22 @@ This will create a virtual environment in your project root. It will be in the f
 To activate the virtual environment (and we need to do this everytime we close out of the terminal or log off the computer):
 
 ```bash
+# Linux and Mac
 source ./venv/bin/activate
+
+# Windows Command Prompt
+/venv/Scripts/activate.bat
 ```
 
 If you want to verify if your virtual environment is currently active
 
 ```bash
+# Linux and Mac
 which python3
 # <path_to_your_repo_folder>/venv/bin/python3
+
+# Windows Command Prompt
+where python
 ```
 
 If `which` outputs something like `usr/bin/python3`, you did something wrong. Go back through the steps and verify.
@@ -173,8 +193,6 @@ You should see some output that looks like this!
 
 If not, go back and verify you followed the steps correctly.
 
-## Step 3 - Let's Build the Project
-
 ### Structure
 
 Best to get this out of the way up front. You'll need to create a few folders. Get your repo organized in the following manner:
@@ -195,7 +213,9 @@ Best to get this out of the way up front. You'll need to create a few folders. G
 
 If the folders do not exist, create them. If the files do not exist, create them with the correct name and extension, and just leave them blank for now.
 
-### App.py
+## Step 3 - Building app.py and our Template
+
+### Starting App.py
 
 Finally, we can start writing our web app. Trust me, all the setup was worth it. Open your app.py.
 
@@ -245,13 +265,12 @@ I should now be able to go into my browser, and enter that web address.
 
 At this point, Flask is working, and our computer can see its output.
 
-A very useful option in Flask is to change the `app.run()` call in the following manner:
-
-```python
-app.run(port=port, debug=True)
-```
-
-This will force the server to reload whenever changes are made to your project, so that way you don't have to manually kill the process and restart it every time.
+>A very useful option in Flask is to change the `app.run()` call in the following manner:
+>
+>```python
+>app.run(port=port, debug=True)
+>```
+>This will force the server to reload whenever changes are made to your project, so that way you don't have to manually kill the process and restart it every time.
 
 ## Templates
 
@@ -366,6 +385,79 @@ We added the default variable `people=people_from_app_py` to the `render_templat
 
 The occurence of `people` on the left-side can be anything. This is the name we will use to access the list of dictionaries `people_from_app_py` from `app.py`.
 
-Now we need to setup our template to use that data when it renders. Open up your template. Right now it is just HTML. We are going to use *delimiters* or special syntax defined by the Jinja 2 API to make use of extra data we pass to the renderer.
+Now we need to setup our template to use that data when it renders. Open up your template. Right now it is just HTML. We are going to use *delimiters* or special syntax defined by the Jinja 2 API to make use of extra data we pass to the renderer. Delimiters usually are segments of text with opening and closing brackets. Read about them more in the Jinja 2 API Docs.
+
+```javascript
+{{ }} // jinja statement
+{% %} // jinja expression
+{# #} // jinja comment
+```
+
+Here is what we are adding to our Jinja 2 template
+
+```html
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Location</th>
+        <th>Favorite Language</th>
+    </tr>
+    <tbody>
+    {% for item in people %}
+    <tr>
+        <td>{{item['name']}}</td>
+        <td>{{item['age']}}</td>
+        <td>{{item['location']}}</td>
+        <td>{{item['favorite_color']}}</td>
+    </tr>
+    {% endfor %}
+    </table>
+```
+
+Now, if you are not running your server in debugging Mode, restart it. Otherwise, open your browser, and navigate back to your page and check the result.
+
+![Rendering dynamic data with Flask](./doc_img/flask_rendering_dynamic_data.png)
+
+We have data from our `app.py` presented in our browser screen! That's pretty much it! At this point, data that is received by the server (from a database, external API, etc.) can now be presented to the renderer for display in the browser. 
+
+> In the next section we are going to connect the database to the web app. In our case, the MySQL connector (library) we will be using returns data as tuples. So you'll have to adjust the above example slightly to account for that.
+
+## Step 4 - Connecting the Database
+
+You remembered your MySQL password? Right? We will need it.
+
+### Starting the Database
+
+Every installation is going to be different on your local machine. 
+
+**Windows**
+
+1. Open a 'run' window using `Windows Key + R`
+2. Enter `services.msc`
+3. Find the item called `MySQL`
+4. Click `start`
+
+You can set this to automatically run if you want.
+
+**OSX**
+
+1. Open `Settings`
+2. Click `MySQL`
+3. Click `Start MySQL Server`
+
+**Linux**
+
+From the terminal run
+
+```bash
+service mysql start
+# You may need to add sudo to this command if you are using WSL2
+# You will *NOT* need sudo if you are on the school's flip server, it wont work anyway.
+```
+
+### Accessing the Database
+
 
 
