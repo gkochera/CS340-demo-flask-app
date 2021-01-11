@@ -7,37 +7,6 @@ import os
 app = Flask(__name__)
 db_connection = db.connect_to_database()
 
-
-# Temporary
-
-people = [
-{
-    "name": "Thomas",
-    "age": 33,
-    "location": "New Mexico",
-    "favorite_color": "Blue"
-},
-{
-    "name": "Gregory",
-    "age": 41,
-    "location": "Texas",
-    "favorite_color": "Red"
-},
-{
-    "name": "Vincent",
-    "age": 27,
-    "location": "Ohio",
-    "favorite_color": "Green"
-},
-{
-    "name": "Alexander",
-    "age": 29,
-    "location": "Florida",
-    "favorite_color": "Orange"
-}
-] 
-
-
 # Routes 
 
 @app.route('/')
