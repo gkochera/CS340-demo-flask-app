@@ -1,12 +1,22 @@
 # Overview
 
-This guide is intended for the students in CS 340 who want to take a path through the class using Flask/Python instead of Node.js. This guide assumes you have basic familiarity with Python and MySQL. You should also be capable of navigating to your computers terminal and manuevering with it at a basic level.
+This guide is intended for the students in CS 340 who want to take a path through the class using Flask/Python instead of Node.js.
 
 This guide walks through everything from getting the tools setup to work on the app, setting up the infrastructure required to build and run your app, and building and (eventually) deploying the app either to OSU's flip server or Heroku.
 
+There are a few assumptions that are made when this guide is written:
+
+- You have basic familiarity with Python and MySQL syntax
+- You are capable of opening a terminal and navigating using basic commands like `cd`, `ls`, etc.
+    - I will present the Windows command prompt equivalents however I strongly recommend getting a proper terminal installed. Life will be way easier; I promise!
+- You are developing your project on your own machine and not directly on the OSU server
+    - We will point out differences for those who are working on the OSU server or any steps you might need to take
+- This guide was developed using Windows 10 coupled with Windows Subsystem for Linux 2 (running Ubuntu). I will point out any variations where commands or tasks are different for users with other setups.
+
+
 ## Contributions
 
-This guide is based off of the work previously done by prior TA and student, @mlapresta. Their previous work can be found in the repo [mlapresta/cs340_starter_app](https://github.com/mlapresta/cs340_starter_app). Without this work, this would have been a larger endeavor. 
+This guide is based off of the work previously done by prior TA and student, @mlapresta. Her previous work can be found in the repo [mlapresta/cs340_starter_app](https://github.com/mlapresta/cs340_starter_app). Without this work, this would have been a larger endeavor. In particular, we use her `db_connector.py` and `db_credentials.py` as well as some of her documentation.
 
 Dr. Curry and Prof. Safonte for allowing me the time to build the guide and project for other students to benefit from.
 
