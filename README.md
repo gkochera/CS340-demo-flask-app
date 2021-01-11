@@ -6,7 +6,7 @@ This guide walks through everything from getting the tools setup to work on the 
 
 ## Contributions
 
-This guide is based off of the work previously done by @mlapresta. Their previous work can be found in the repo [mlapresta/cs340_starter_app](https://github.com/mlapresta/cs340_starter_app). Without this work, this would have been a larger endeavor. 
+This guide is based off of the work previously done by prior TA and student, @mlapresta. Their previous work can be found in the repo [mlapresta/cs340_starter_app](https://github.com/mlapresta/cs340_starter_app). Without this work, this would have been a larger endeavor. 
 
 Dr. Curry and Prof. Safonte for allowing me the time to build the guide and project for other students to benefit from.
 
@@ -583,4 +583,14 @@ This will be very handy later on. We will need to know some information about th
 <a name="database-to-app"></a>
 ## Connecting the Database to Our App
 
-We have a bit of work to do now. We need to write a bit of code to set up our connection to the database, establish how we are going to communicate with it, and do some other housekeeping while the app is running. Fortunately, @mlopresta has written much of the code needed to interface with this database. In our `database` folder, there are two files: `db_connector.py` and `db_credentials.py`.
+We have a bit of work to do now. We need to write a bit of code to set up our connection to the database, establish how we are going to communicate with it, and do some other housekeeping while the app is running. Fortunately, @mlapresta has written much of the code needed to interface with this database. In our `database` folder, there are two files: `db_connector.py` and `db_credentials.py`.
+
+`db_connector.py` handles all of the communication with the database. We will make calls to functions in it to connect, and run querires. `db_credentials.py` handles holding our credentials, more on this later.
+
+> Storing live credentials in a python file is not the most secure way of handling secure information like hostnames, usernames and passwords. We will discuss later other ways of authenticating (that really aren't very complicated) which are more secure.
+
+Back to our `app.py`, we need to import `db_connector`.
+
+```python
+import database.db_connector as db
+```
