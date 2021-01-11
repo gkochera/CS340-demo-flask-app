@@ -2,11 +2,15 @@
 
 ## Table of Contents
 
-[Step 1 - Get the Tools Downloaded You Will Need](## Step 1 - Get The Tools Downloaded You Will Need)
+- [Step 1 - Get the Tools Downloaded You Will Need](#Step-1)
+- [Step 2 - Preparation](#Step-2)
+- [Step 3 - Building app.py and our Template](#Step-3)
+- [Step 4 - Connecting your Database](#Step-4)
 # Setup
 
 Preparation is key with any project, especially a portfolio project. You want to show prospective employers that you can not only be productive but also work efficiently. Preparation will also make your project flow smoothly as well as let you pinpoint the area where bugs are occuring with ease. Read on, and we will go throug a step-by-step guide on getting setup to run your first Flask project.
 
+#Step-1
 ## Step 1 - Get The Tools Downloaded You Will Need
 
 You are going to need a few things get going here.
@@ -59,6 +63,7 @@ On Mac OSX, you already have a Terminal built in. If you open up Spotlight Searc
 
 On Linux, nearly the same as Mac OSX, except that it will be in your Start Menu. Chances are if you are natively running Linux, you're already quite familiar with opening the terminal.
 
+#Step-2
 ## Step 2 - Preparation
 
 ### Git
@@ -216,6 +221,7 @@ Best to get this out of the way up front. You'll need to create a few folders. G
 
 If the folders do not exist, create them. If the files do not exist, create them with the correct name and extension, and just leave them blank for now.
 
+#Step-3
 ## Step 3 - Building app.py and our Template
 
 ### Starting App.py
@@ -427,6 +433,7 @@ We have data from our `app.py` presented in our browser screen! That's pretty mu
 
 > In the next section we are going to connect the database to the web app. In our case, the MySQL connector (library) we will be using returns data as tuples. So you'll have to adjust the above example slightly to account for that.
 
+#Step-4
 ## Step 4 - Connecting the Database
 
 You remembered your MySQL password? Right? We will need it.
