@@ -1,11 +1,11 @@
-import MySQLdb as mariadb
-from db_credentials import host, user, passwd, db
+import MySQLdb
+from database.db_credentials import host, user, passwd, db
 
 def connect_to_database(host = host, user = user, passwd = passwd, db = db):
     '''
     connects to a database and returns a database objects
     '''
-    db_connection = mariadb.connect(host,user,passwd,db)
+    db_connection = MySQLdb.connect(host,user,passwd,db)
     return db_connection
 
 def execute_query(db_connection = None, query = None, query_params = ()):
