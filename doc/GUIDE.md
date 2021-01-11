@@ -1,5 +1,8 @@
 # Overview
 
+## Table of Contents
+
+[Step 1 - Get the Tools Downloaded You Will Need](## Step 1 - Get The Tools Downloaded You Will Need)
 # Setup
 
 Preparation is key with any project, especially a portfolio project. You want to show prospective employers that you can not only be productive but also work efficiently. Preparation will also make your project flow smoothly as well as let you pinpoint the area where bugs are occuring with ease. Read on, and we will go throug a step-by-step guide on getting setup to run your first Flask project.
