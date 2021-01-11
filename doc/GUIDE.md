@@ -126,7 +126,7 @@ pip3 install --user virtualenv
 We then want to run the command
 
 ```bash
-virtualenv venv
+python3 -m venv ./venv
 ```
 
 This will create a virtual environment in your project root. It will be in the folder `venv` located in the project root. I *strongly* recommend adding `/venv` to your `.gitignore` file. This will save a lot of headaches down the road. When you migrate your project to your flip, you'll create a new virtual environment there. If you want to package your project up for Heroku, doing this now will save you work down the road.
@@ -272,7 +272,7 @@ Throw some HTML in there. Yes, that's all a template is, just HTML. There is som
 </head>
 <body>
     <h1>CS 340 - Introduction to Databases</h1>
-    <p>This is a demonstration project created to show students how to create a Flask app and connect it to a MySQL database.
+    <p>This is a demonstration project created to show students how to create a Flask app and connect it to a MySQL database.</p>
 </body>
 </html>
 ```
@@ -322,6 +322,50 @@ Ok, so how do we get data from the server to display on the page? The power of t
 
 Keep these handy when you are working with Jinja templates, they're invaluable.
 
-So a quick demonstration. Create a dictionary in your `app.py`. It can be whatever you want, just have a few key/value pairs in there.
+So a quick demonstration. I'm going to create a list of dictionaries in my `app.py`, and use *delimiters* in my Jinja 2 template to parse the list passed in from `app.py`. Here is my sample list of dictionaries:
 
 ```python
+people_from_app_py =
+[
+{
+    "name": "Thomas",
+    "age": 33,
+    "location": "New Mexico",
+    "favorite_color": "Blue"
+},
+{
+    "name": "Gregory",
+    "age": 41,
+    "location": "Texas",
+    "favorite_color": "Red"
+},
+{
+    "name": "Vincent",
+    "age": 27,
+    "location": "Ohio",
+    "favorite_color": "Green"
+},
+{
+    "name": "Alexander",
+    "age": 29,
+    "location": "Florida",
+    "favorite_color": "Orange"
+}
+]
+```
+
+I will modify the code in my route handler for the root path slightly.
+
+```python
+@app.route('/')
+def root():
+    return render_template("main.j2", people=people_from_app_py)
+```
+
+We added the default variable `people=people_from_app_py` to the `render_template()` call. 
+
+The occurence of `people` on the left-side can be anything. This is the name we will use to access the list of dictionaries `people_from_app_py` from `app.py`.
+
+Now we need to setup our template to use that data when it renders. Open up your template. Right now it is just HTML. We are going to use *delimiters* or special syntax defined by the Jinja 2 API to make use of extra data we pass to the renderer.
+
+
