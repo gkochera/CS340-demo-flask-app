@@ -1,0 +1,28 @@
+<table>
+<thead>
+<tr>
+    <!-- Iterate through each key in the first entry to get the
+    column name -->
+    {% for key in bsg_people[0].keys() %}
+
+    <!-- Create a <th> tag with the key inside of it, this will be
+    our header row -->
+    <th>{{ key }}</th>
+
+    <!-- End of this for loop -->
+    {% endfor %}
+</tr>
+<tbody>
+
+<!-- Now, iterate through every person in bsg_people -->
+{% for person in bsg_people %}
+<tr>
+    <!-- Then iterate through every key in the current person dictionary -->
+    {% for key in person.keys() %}
+
+    <!-- Create a <td> element with the value of that key in it -->
+    <td>{{person[key]}}</td>
+    {% endfor %}
+</tr>
+{% endfor %}
+</table>

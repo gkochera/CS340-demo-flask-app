@@ -22,31 +22,40 @@ Dr. Curry and Prof. Safonte for allowing me the time to build the guide and proj
 
 # Table of Contents
 
-- [Step 1 - Get the Tools Downloaded You Will Need](#step-1)
-    - [Text Editor](#text-editor)
-    - [Database Engine](#database-engine)
-    - [Python](#python)
-    - [Browser](#browser)
-    - [Terminal Application](#terminal-application)
-- [Step 2 - Preparation](#step-2)
-    - [Git](#git)
-    - [Create a .gitignore File](#gitignore)
-    - [Virtual Environments](#virtual-environment)
-    - [Install Flask and its Dependencies](#install-flask)
-    - [Project Directory Structure](#directory-structure)
-- [Step 3 - Building app.py](#step-3)
-    - [Starting App.py](#starting-app-py)
-- [Step 4 - Templates](#step-4)
-    - [Setting up Templating in Flask](#templates-in-flask)
-    - [Dynamically Displaying Data in a Template](#dynamic-data)
-- [Step 5 - Connecting your Database](#step-5)
-    - [Starting the Database](#starting-database)
-    - [Accessing the Database](#accessing-database)
-    - [Populating the Database](#populating-database)
-    - [Connecting the Database to Our App](#database-to-app)
-- [Step 6 - Adding Queries to Your App and Displaying Data](#step-6)
-    - [Running a Query](#running-a-query)
+- [Overview](#overview)
+  - [Contributions](#contributions)
+- [Table of Contents](#table-of-contents)
+- [Setup](#setup)
+- [Step 1 - Get The Tools Downloaded You Will Need](#step-1---get-the-tools-downloaded-you-will-need)
+  - [Text Editior](#text-editior)
+  - [Database Engine](#database-engine)
+  - [Python](#python)
+  - [Browser](#browser)
+  - [Terminal Application](#terminal-application)
+- [Step 2 - Preparation](#step-2---preparation)
+  - [Git](#git)
+  - [Create a .gitignore File](#create-a-gitignore-file)
+  - [Python Virtual Environment (Optional but Recommended)](#python-virtual-environment-optional-but-recommended)
+  - [Install Flask and its Dependencies](#install-flask-and-its-dependencies)
+  - [Project Directory Structure](#project-directory-structure)
+- [Step 3 - Building `app.py`](#step-3---building-apppy)
+  - [Starting `app.py`](#starting-apppy)
+- [Step 4 - Templates](#step-4---templates)
+  - [Setting up Templating in Flask](#setting-up-templating-in-flask)
+  - [Dynamically Displaying Data in a Template](#dynamically-displaying-data-in-a-template)
+- [Step 5 - Connecting the Database](#step-5---connecting-the-database)
+  - [Starting the Database](#starting-the-database)
+  - [Accessing the Database](#accessing-the-database)
+  - [Populating the Database](#populating-the-database)
+  - [Connecting the Database to Our App](#connecting-the-database-to-our-app)
+- [Step 6 - Adding Queries to Your App and Displaying Data](#step-6---adding-queries-to-your-app-and-displaying-data)
+  - [Running a Query](#running-a-query)
 - [Conclusion](#conclusion)
+- [Extra Bits](#extra-bits)
+  - [Gunicorn](#gunicorn)
+  - [Migrating a Project Developed Locally to OSU for Deployment](#migrating-a-project-developed-locally-to-osu-for-deployment)
+  - [Better Ways to Store Database Credentials](#better-ways-to-store-database-credentials)
+  - [Deploying your Webapp to Heroku](#deploying-your-webapp-to-heroku)
 
 # Setup
 
@@ -641,12 +650,14 @@ The process for querying data from a database essentially happens in 4 steps.
 
 In our app.py, we just need to add a new route (you can even use the existing `\` one). Add the route `bsg-people` under the routes section in your `app.py`.
 
+> At this point in the guide, we can pull out the temporary dictionary we added with people, names, colors, etc. We can also remove `people=people` from the `/` route render_template call.
+
 ```python
 # Routes 
 
 @app.route('/')
 def root():
-    return render_template("main.j2", people=people)
+    return render_template("main.j2")
 
 @app.route('/bsg-people')
 def bsg_people():
@@ -716,7 +727,7 @@ Confirmation that our webapp can now talk to our database!
 
 In `app.py` we have taken care of Step 2, taking the request and sending it to the database, and Step 3, getting the response, parsing and manipulating it as necessary, and Step 4, dispatching it back to the browswer.
 
-Now to put it through the `render_template()` function. We will need to modify our `templates\main.j2` file. 
+Now to put it through the `render_template()` function. We are going to create another template file, I will call it `bsg.j2`. 
 
 ```html
     <table>
@@ -757,7 +768,7 @@ def bsg_people():
     query = "SELECT * FROM bsg_people;"
     cursor = db.execute_query(db_connection=db_connection, query=query)
     results = cursor.fetchall()
-    return render_template("main.j2", bsg_people=results)
+    return render_template("bsg.j2", bsg_people=results)
 ```
 
 > Note: We have removed `json.dumps()` from around the `cursor.fetchall()` call. We do not want to turn this data to JSON when using our template renderer.
@@ -772,3 +783,22 @@ Everything should be in order now, restart your server if necessary and navigate
 That is pretty much it! We setup our project, organized it, established a web server, verified it was working, setup our database, loaded it with data, and then used our `app.py` to act as an inteface between the user on our web app and the database.
 
 From here, it's not very difficult to branch out. You can setup forms to capture user input, send it to `app.py` via a GET or POST request and update your database, add new entries, or even delete rows in the database. You can add style and interactivity to your webapp using CSS and JavaScript. The sky is the limit.
+
+<a name="extra-bits"></a>
+# Extra Bits
+
+There are a few pieces of helpful information for everyone that really didn't fit well anywhere in the main guide but they're still really important for everyone to have access to. We talk about other serving options, migrating to OSU, and a brief discussion on securely storing credentials.
+
+<a name="gunicorn"></a>
+## Gunicorn
+
+Gunicorn 
+
+<a name="migrating-to-osu"></a>
+## Migrating a Project Developed Locally to OSU for Deployment
+
+<a name="better-credential-storage"></a>
+## Better Ways to Store Database Credentials
+
+<a name="Heroku Deployment"></a>
+## Deploying your Webapp to Heroku
