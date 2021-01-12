@@ -829,7 +829,15 @@ We should all be familiar with this by now. Make sure that your commits are all 
 
 In your terminal this can be done like such
 
+```bash
+git status
+```
 
+And our output *might* look like this
+
+![Git status with branch being ahead](doc_img/terminal_git_status.png)
+
+If it says anything other than being up-to-date
 
 <a name="better-credential-storage"></a>
 ## Better Ways to Store Database Credentials
