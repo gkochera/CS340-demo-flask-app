@@ -792,7 +792,45 @@ There are a few pieces of helpful information for everyone that really didn't fi
 <a name="gunicorn"></a>
 ## Gunicorn
 
-Gunicorn 
+Gunicorn is a Web Server Gateway Interface (WSGI). For the purposes of our class, it really is just important to know that this is a different method for serving your application.
+
+To install Gunicorn is quite simple (make sure your virtual environment is active if you have one), we enter in the terminal
+
+```bash
+pip3 install gunicorn
+```
+
+Once we installed it and all went well, we need to create a file for Gunicorn to use and know what app to serve. Create a file called `wsgi.py`. We just need a few lines of code.
+
+```python
+from app import app
+
+if __name__ == "__main__":
+    app.run()
+```
+
+Lastly, we go back to our terminal and run `gunicorn`.
+
+```bash
+gunicorn --bind 0.0.0.0:<your-desired-port-here> wsgi:app -D
+```
+
+Pay note to the `-D` switch here. When we add this switch, it tells Gunicorn to 'daeomonize' its process, which allows it to run in the background, and will not exit when you logoff, close your terminal or otherwise. This applies on the flip server and on your local machine. If you are just testing and *do not want the application to stay alive after logging off* simply omit the `-D` switch.
+
+Once Gunicorn is running, you should be able to navigate to `localhost:port` on your browser where `port` is the port you specified when you ran Gunicorn and see your webapp in all of its glory!
+
+If you run Gunicorn with the `-D` switch, you'll likely wonder, well how do I close it. Open your terminal
+
+```bash
+ps ax | grep gunicorn
+```
+![Looking for the Gunicorn process in Terminal](./doc_img/gunicorn_ps_ax.png)
+
+You will see 4 or 5 digit integers on the left, and you might also see your username if you read further down the line. The very first number is the number of the main `gunicorn` process we want to `kill`. In this example I need to `kill 8059`
+
+Once you `kill` the process will shut down and the web server is no longer running. You can restart it again however you would like.
+
+>When logged into OSU's servers, you might get a very long list of processes, you will have to scroll through and find the very first process number or `PID` of `gunicorn` under your username.
 
 <a name="migrating-to-osu"></a>
 ## Migrating a Project Developed Locally to OSU for Deployment
@@ -800,5 +838,5 @@ Gunicorn
 <a name="better-credential-storage"></a>
 ## Better Ways to Store Database Credentials
 
-<a name="Heroku Deployment"></a>
+<a name="heroku-deployment"></a>
 ## Deploying your Webapp to Heroku
