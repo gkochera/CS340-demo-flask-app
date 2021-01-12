@@ -55,6 +55,13 @@ Dr. Curry and Prof. Safonte for allowing me the time to build the guide and proj
   - [Gunicorn](#gunicorn)
   - [Migrating a Project Developed Locally to OSU for Deployment](#migrating-a-project-developed-locally-to-osu-for-deployment)
     - [Requirements.txt](#requirements.txt)
+    - [Getting a Dump of your Local Database](#getting-a-dump-of-your-local-database)
+    - [Ensure Your Project is Pushed to GitHub](#ensure-your-project-is-pushed-to-github)
+    - [Cloning Your Repository on OSU](#cloning-your-repository-on-osu)
+    - [Installing Dependencies from Requirements.txt](#installing-dependencies-from-requirements.txt)
+    - [Populating your OSU Database](#populating-your-osu-database)
+    - [Changing our Credentials](#changing-our-credentials)
+    - [Deploying the Migrated Project on OSUs Flip Server](#deploying-the-migrated-project-on-osus-flip-server)
   - [Better Ways to Store Database Credentials](#better-ways-to-store-database-credentials)
   - [Deploying your Webapp to Heroku](#deploying-your-webapp-to-heroku)
 
