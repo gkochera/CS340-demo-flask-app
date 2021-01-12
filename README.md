@@ -54,6 +54,7 @@ Dr. Curry and Prof. Safonte for allowing me the time to build the guide and proj
 - [Extra Bits](#extra-bits)
   - [Gunicorn](#gunicorn)
   - [Migrating a Project Developed Locally to OSU for Deployment](#migrating-a-project-developed-locally-to-osu-for-deployment)
+    - [Requirements.txt](#requirements.txt)
   - [Better Ways to Store Database Credentials](#better-ways-to-store-database-credentials)
   - [Deploying your Webapp to Heroku](#deploying-your-webapp-to-heroku)
 
@@ -61,17 +62,14 @@ Dr. Curry and Prof. Safonte for allowing me the time to build the guide and proj
 
 Preparation is key with any project, especially a portfolio project. You want to show prospective employers that you can not only be productive but also work efficiently. Preparation will also make your project flow smoothly as well as let you pinpoint the area where bugs are occuring with ease. Read on, and we will go throug a step-by-step guide on getting setup to run your first Flask project.
 
-<a name="step-1"></a>
 # Step 1 - Get The Tools Downloaded You Will Need
 
 You are going to need a few things get going here.
 
-<a name="text-editor"></a>
 ## Text Editior
 
 Text Editors are like clothes. Everyone has their preferences. I prefer VS Code so this guide will be built using that editor. You can use what you please. Atom, Sublime, Notepad, Vim, eMacs or even Notepad are completely acceptable. We just need to be able to edit our code.
 
-<a name="database-engine"></a>
 ## Database Engine
 
 **MySQL** is the database we will be using in this class. MariaDB and PostgresSQL are other flavors of database engines, but for the purposes of this guide and class, we're going to stick with MySQL. It's acceptable to use MariaDB and PostgresSQL as they are relational databases but just be aware support may be limited from staff and your peers.
@@ -90,7 +88,6 @@ Mint 20.04: https://medium.com/@shivraj.jadhav82/mysql-setup-on-linux-mint-94847
 
 > When setting up your MySQL installation, please make note of what you set the root password to. We will need this later. Keep it safe.
 
-<a name="python"></a>
 ## Python
 
 Python is the language we will be using to build our Flask application. You can find the downloads for that here.
@@ -99,12 +96,10 @@ https://www.python.org/downloads/
 
 I won't get to specific here, at this point in the program, you should be familiar with how to install Python (or already have it installed). We will require Python 3 (or better) for the purposes of this project.
 
-<a name="browser"></a>
 ## Browser
 
 Personally, I am a Firefox user. This guide will be using Firefox, but Chrome is also acceptable. I'm not familiar with Edge, but if you are, you can certainly give it a whirl also. Just be familiar with opening your developer console. On Firefox, its the F12 key.
 
-<a name="terminal-application"></a>
 ## Terminal Application
 
 On Windows, there isn't a native terminal (sort-of). I use Windows Subsystem for Linux 2 (WSL2) which allows Windows to run a native installation of Linux along side Windows. This is remarkably helpful in web application development. If you are a Windows 10 user, I strongly recommend it, since it will let you develop on a native Linux installation without having to dual boot.
@@ -119,10 +114,8 @@ On Mac OSX, you already have a Terminal built in. If you open up Spotlight Searc
 
 On Linux, nearly the same as Mac OSX, except that it will be in your Start Menu. Chances are if you are natively running Linux, you're already quite familiar with opening the terminal.
 
-<a name="step-2"></a>
 # Step 2 - Preparation
 
-<a name="git"></a>
 ## Git
 
 I'm a big fan of Git. You should be too. It's very forgiving and if you make a mistake, it's (usually) easy to go back to a point where things weren't broken.
@@ -168,7 +161,6 @@ You will now be in your new folder created by cloning the repo.
 
 > Your terminal prompt is likely to look a bit different than what you see in these images. I have customized mine. The commands on your terminal will still yield the same output, they just might be different colors or fonts.
 
-<a name="gitignore"></a>
 ## Create a .gitignore File
 
 There are going to be certain things we don't want to submit to our repo, such as credentials, virtual environments, etc.
@@ -183,7 +175,6 @@ You can add individual paths, files and folders on a line by line basis in this 
 
 to your `.gitignore` file. Whenver you manipulate your git repository, git will not even look in that folder or track it for changes. We will use this file later on.
 
-<a name="virtual-environment"></a>
 ## Python Virtual Environment (Optional but Recommended)
 
 The short version is that you will be installing a few Python packages to support your web application. But we don't want to muddy up the installation of Python on our computer in the event something goes wrong. To this end, we can use Python "virtual environments" to essentially act as a stand-alone installation of Python dedicated solely to our web application.
@@ -241,7 +232,6 @@ deactivate
 
 Always remember to have your virtual environment running when working on your project.
 
-<a name="install-flask"></a>
 ## Install Flask and its Dependencies
 
 This one is pretty straight forward. In your terminal, make sure your virtual environment is active if you have one, and run the following command
@@ -261,7 +251,6 @@ You should see some output that looks like this!
 
 If not, go back and verify you followed the steps correctly.
 
-<a name="directory-structure"></a>
 ## Project Directory Structure
 
 Best to get this out of the way up front. You'll need to create a few folders. Get your repo organized in the following manner:
@@ -282,10 +271,8 @@ Best to get this out of the way up front. You'll need to create a few folders. G
 
 If the folders do not exist, create them. If the files do not exist, create them with the correct name and extension, and just leave them blank for now.
 
-<a name="step-3"></a>
 # Step 3 - Building `app.py`
 
-<a name="starting-app-py"></a>
 ## Starting `app.py`
 
 Finally, we can start writing our web app. Trust me, all the setup was worth it. Open your app.py.
@@ -343,12 +330,10 @@ At this point, Flask is working, and our computer can see its output.
 >```
 >This will force the server to reload whenever changes are made to your project, so that way you don't have to manually kill the process and restart it every time.
 
-<a name="step-4"></a>
 # Step 4 - Templates
 
 Ok, so sending a single string of text to the screen, kind of boring. I know. That's where a templating engine comes into play. With Flask, we will use Jinja2. It's actually already part of the Flask package and sufficient to use on this project.
 
-<a name="templates-in-flask"></a>
 ## Setting up Templating in Flask
 
 Navigate over to your `/templates` folder and open up the `main.j2` that you created.
@@ -406,7 +391,6 @@ We can go back to our browser and verify that our changes were good
 
 ![Rendering a template with Flask and Jinja 2](./doc_img/flask_rendering_a_template.png)
 
-<a name="dyanmic-data"></a>
 ## Dynamically Displaying Data in a Template
 
 Ok, so how do we get data from the server to display on the page? The power of templating of course! Before we get off to a roll here, I am going to point everyone to a very important link.
@@ -498,12 +482,10 @@ We have data from our `app.py` presented in our browser screen! That's pretty mu
 
 > In the next section we are going to connect the database to the web app. In our case, the MySQL connector (library) we will be using returns data as tuples. So you'll have to adjust the above example slightly to account for that.
 
-<a name="step-5"></a>
 # Step 5 - Connecting the Database
 
 You remembered your MySQL password? Right? We will need it.
 
-<a name="starting-database"></a>
 ## Starting the Database
 
 Every installation is going to be different on your local machine. This step may not be necessary but everyone will be different and helps knowing how to do this.
@@ -535,7 +517,6 @@ service mysql start
 # You will *NOT* need sudo if you are on the school's flip server, it wont work anyway.
 ```
 
-<a name="accessing-database"></a>
 ## Accessing the Database
 
 The database can be accessed a variety of ways: 
@@ -612,7 +593,6 @@ This will be very handy later on. We will need to know some information about th
 
 > You might notice the commands between steps are ALL CAPS or lower case. It really doesn't matter. MySQL understands just fine either way. The UPPER CASE convention just helps make the SQL keywords stand out but either way your queries will work just fine. The only time case matters is with your string literals (i.e. anything in quotes).
 
-<a name="database-to-app"></a>
 ## Connecting the Database to Our App
 
 We have a bit of work to do now. We need to write a bit of code to set up our connection to the database, establish how we are going to communicate with it, and do some other housekeeping while the app is running. Fortunately, @mlapresta has written much of the code needed to interface with this database. In our `database` folder, there are two files: `db_connector.py` and `db_credentials.py`.
@@ -633,12 +613,10 @@ After we import the `db_connector` module, we also need to create a connection i
 db_connection = db.connect_to_database()
 ```
 
-<a name="step-6"></a>
 # Step 6 - Adding Queries to Your App and Displaying Data
 
 Home stretch! This section will cover adding queries to your `app.py`, establishing the database connection, running the query, and parsing the return data to present to the browser.
 
-<a name="running-a-query"></a>
 ## Running a Query
 
 The process for querying data from a database essentially happens in 4 steps.
@@ -777,19 +755,16 @@ Everything should be in order now, restart your server if necessary and navigate
 
 ![bsg_people query displayed in table on browser](doc_img/flask_bsg_people_table.png)
 
-<a name="conclusion"></a>
 # Conclusion
 
 That is pretty much it! We setup our project, organized it, established a web server, verified it was working, setup our database, loaded it with data, and then used our `app.py` to act as an inteface between the user on our web app and the database.
 
 From here, it's not very difficult to branch out. You can setup forms to capture user input, send it to `app.py` via a GET or POST request and update your database, add new entries, or even delete rows in the database. You can add style and interactivity to your webapp using CSS and JavaScript. The sky is the limit.
 
-<a name="extra-bits"></a>
 # Extra Bits
 
 There are a few pieces of helpful information for everyone that really didn't fit well anywhere in the main guide but they're still really important for everyone to have access to. We talk about other serving options, migrating to OSU, and a brief discussion on securely storing credentials.
 
-<a name="gunicorn"></a>
 ## Gunicorn
 
 Gunicorn is a Web Server Gateway Interface (WSGI). For the purposes of our class, it really is just important to know that this is a different method for serving your application.
@@ -832,8 +807,25 @@ Once you `kill` the process will shut down and the web server is no longer runni
 
 >When logged into OSU's servers, you might get a very long list of processes, you will have to scroll through and find the very first process number or `PID` of `gunicorn` under your username.
 
-<a name="migrating-to-osu"></a>
 ## Migrating a Project Developed Locally to OSU for Deployment
+
+This sounds like it would be very complicated but it truly isn't. In just a few steps, you can take a project you developed on your local macine and migrate it over to OSUs server with extreme ease. We just need to do it in a few steps.
+
+### Requirements.txt
+We need to generate a file to basically keep track of all the dependencies Python needs to operate and run our webserver. Fortunately `pip3` makes this very simple. Open up your terminal in the root of your project and enter
+
+```bash
+pip3 freeze > requirements.txt
+```
+This will create a file called `requirements.txt` in the root of your project. If you open it up, its really just a simple list of all the packages we have installed in our virtual environment to get the project running.
+
+> If you did not setup a virtual environment and have been installing packages during your time at school on your local installation, this list can be VERY long. Its **strongly** encouraged that you develop using a virtual environment for this reason.
+
+In essence, `requirements.txt` is *basically* the equivalent of `package.json` in a Node.js project. Not, exactly, but for our purposes its a sufficient explanation.
+
+### Ensure Your Project is Pushed to GitHub
+
+We should all be familiar with this by now. Make sure that your commits are all in
 
 <a name="better-credential-storage"></a>
 ## Better Ways to Store Database Credentials
