@@ -825,7 +825,11 @@ In essence, `requirements.txt` is *basically* the equivalent of `package.json` i
 
 ### Ensure Your Project is Pushed to GitHub
 
-We should all be familiar with this by now. Make sure that your commits are all in
+We should all be familiar with this by now. Make sure that your commits are all pushed to the remote repository, in this case we are using GitHub.
+
+In your terminal this can be done like such
+
+
 
 <a name="better-credential-storage"></a>
 ## Better Ways to Store Database Credentials
