@@ -1,5 +1,13 @@
 import MySQLdb
-from database.db_credentials import host, user, passwd, db
+import os
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+
+host = os.environ.get("340DBHOST")
+user = os.environ.get("340DBUSER")
+passwd = os.environ.get("340DBPW")
+db = os.environ.get("340DB")
 
 def connect_to_database(host = host, user = user, passwd = passwd, db = db):
     '''

@@ -1,6 +1,6 @@
 from flask import Flask, render_template, json
-import database.db_connector as db
 import os
+import database.db_connector as db
 
 # Configuration
 

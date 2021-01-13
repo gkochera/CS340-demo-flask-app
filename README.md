@@ -13,17 +13,21 @@ There are a few assumptions that are made when this guide is written:
     - We will point out differences for those who are working on the OSU server or any steps you might need to take
 - This guide was developed using Windows 10 coupled with Windows Subsystem for Linux 2 (running Ubuntu). I will point out any variations where commands or tasks are different for users with other setups.
 
-
 ## Contributions
 
 This guide is based off of the work previously done by prior TA and student, @mlapresta. Her previous work can be found in the repo [mlapresta/cs340_starter_app](https://github.com/mlapresta/cs340_starter_app). Without this work, this would have been a larger endeavor. In particular, we use her `db_connector.py` and `db_credentials.py` as well as some of her documentation.
 
 Dr. Curry and Prof. Safonte for allowing me the time to build the guide and project for other students to benefit from.
 
+## Clone and Go
+
+You can clone this repo as is, and it will run, so long as you have loaded the data in `/database/bsg_db.sql` a properly configured MySQL database which is running, have a propertly configured `.env` file in the root of your project (same folder as `app.py`). You will also need to install the dependencies in `requirements.txt`.
+
 # Table of Contents
 
 - [Overview](#overview)
   - [Contributions](#contributions)
+  - [Clone and Go](#clone-and-go)
 - [Table of Contents](#table-of-contents)
 - [Setup](#setup)
 - [Step 1 - Get The Tools Downloaded You Will Need](#step-1---get-the-tools-downloaded-you-will-need)
@@ -54,16 +58,16 @@ Dr. Curry and Prof. Safonte for allowing me the time to build the guide and proj
 - [Extra Bits](#extra-bits)
   - [Gunicorn](#gunicorn)
   - [Migrating a Project Developed Locally to OSU for Deployment](#migrating-a-project-developed-locally-to-osu-for-deployment)
-    - [Requirements.txt](#requirements.txt)
+    - [Requirements.txt](#requirementstxt)
     - [Getting a Dump of your Local Database](#getting-a-dump-of-your-local-database)
     - [Ensure Your Project is Pushed to GitHub](#ensure-your-project-is-pushed-to-github)
     - [Cloning Your Repository on OSU](#cloning-your-repository-on-osu)
-    - [Installing Dependencies from Requirements.txt](#installing-dependencies-from-requirements.txt)
+    - [Installing Dependencies from Requirements.txt](#installing-dependencies-from-requirementstxt)
     - [Populating your OSU Database](#populating-your-osu-database)
     - [Changing our Credentials](#changing-our-credentials)
     - [Deploying the Migrated Project on OSUs Flip Server](#deploying-the-migrated-project-on-osus-flip-server)
-  - [Better Ways to Store Database Credentials](#better-ways-to-store-database-credentials)
-  - [Deploying your Webapp to Heroku](#deploying-your-webapp-to-heroku)
+  - [A Better Way to Store Database Credentials](#a-better-way-to-store-database-credentials)
+    - [Environment Variables](#environment-variables)
 
 # Setup
 
@@ -1050,6 +1054,137 @@ We have confirmation that...
 - The webapp is running and functioning correctly
 - We did everything right!
 
-## Better Ways to Store Database Credentials
+## A Better Way to Store Database Credentials
 
-## Deploying your Webapp to Heroku
+Let's take a brief moment to talk about security. It's important. We all agree. You wouldn't take your car (a very valuable object) keys, leave them next to your car when you park it. Well, then you shouldn't take your credentials and store them on GitHub (or any other public repository).
+
+A few things play into assessing how secure you need to be...
+
+1. How likely is your app to be attacked?
+2. How severe could the damage be if your app is attacked?
+
+In our case, both are pretty low to non-existent. It's unlikely there are roving bands of hackers wandering the internet looking for OSU students taking CS 340 wanting to sabotage their project. They would have to break through the VPN, and into the database server. And in the event your database was deleted, would it be a huge amount of effort to recreate it? Probably not. If you really want to be on your A-game, ![dump your database](#getting-a-dump-of-your-local-database) to an SQL file once the project is setup and keep that file in a safe place. If you ever need to recover, its only a few commands to get back up and running.
+
+Now I get, that when we are just protyping and figuring things out, it might be easy to standup a quick database with a simple password and save it in a `*.py` file. What harm is going to be done if there is nothing of value in the database? Probably not much. However, as you move on to the "real world", server downtime and data loss can cost a company an obscene amount of money to fix, so keys sort of become a vital thing to protect. Think about how Facebook or Amazon would answer the above two questions? 
+
+We can do a bit better.
+
+### Environment Variables
+
+Environment variables are strings of data that are stored in machine memory. They're volatile, so when the machine turns off or reboots, it goes away. It makes it just slightly harder for the attacker to get access to your 'secrets'.
+
+Right now, if you followed this guide from the beginning, we have setup our project to read the credentials from `db_credentials.py`. That's going away. We will still need the information in it like the host, username and password.
+
+Navigate to the root of your project on your local machine and create a file called `.env`. That's right, no name, just the extension. This will be a text file we keep our secrets in.
+
+Inside that file, we write down our secrets in the following fashion:
+
+```bash
+340DBHOST=localhost
+# should always be the same
+
+340DBUSER=root             
+# change root if you setup your project to use a different username
+
+340DBPW=password
+# password for said username if any otherwise just leave everything after = blank
+
+340DB=bsg
+# name of your local database name for the project
+```
+
+You can consolidate everything down to its own line, so 4 lines in total, the comments are just added for clarity, here is a second example without comments.
+
+```bash
+340DBHOST=localhost
+340DBUSER=root
+340DBPW=imnottellingyou
+340DB=bsg
+```
+
+Now, save that and open up your `.gitignore` file. Add `.env` to it. **We do not want this to be pushed to our GitHub repo, ever.** They're secrets afterall.
+
+Open up a terminal, if you don't have one open already and run the following command (make sure if you have one, your virtual environment is running)
+
+```bash
+pip3 install python-dotenv
+```
+
+> If you get a massive wall of red text indicating some sort of error about a wheel missing, run `pip3 install wheel` then try again. Not all users will have this issue but I came across it and figured it was worth mentioning.
+
+Now we have to adjust our code. First, delete `db_credentials.py` in your `database` directory. Or, at the very least, remove the information from it, we don't need it anymore. Now open `db_connector.py`. Remove this line...
+
+```python
+from database.db_credentials import host, user, passwd, db
+```
+
+and replace it with this
+
+```python
+import os
+from dotenv import load_dotenv, find_dotenv
+```
+
+Now below all of your imports in `db_credentials.py` but before your first function declaration add this
+
+```python
+# Load the .env file into the environment variables
+load_dotenv(dotenv_path)
+
+# Set the variables in our app to the already set environment variables
+host = os.environ.get("340DBHOST")
+user = os.environ.get("340DBUSER")
+passwd = os.environ.get("340DBPW")
+db = os.environ.get("340DB")
+```
+
+These are the calls to retrieve the needed 'secrets' from the operating system environment.
+
+After your done, the top of your `db_connector.py` file should look like this
+
+```python
+import MySQLdb
+import os
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+
+host = os.environ.get("340DBHOST")
+user = os.environ.get("340DBUSER")
+passwd = os.environ.get("340DBPW")
+db = os.environ.get("340DB")
+```
+
+Run your app now, and if all went well, it runs. And now, your secrets are well, a little more secret. Now, we have to handle the flip side of things; No pun intended. 
+
+First, _make sure you added your `.env` file to `.gitignore`!_
+
+Now, commit and push your changes to GitHub or whatever remote repo you are using.
+
+Then, login to the flip server you plan on hosting on, and navigate to the root of your project, and perform a `git pull`. This will update the files on the flip server to mirror all the work we just did.
+
+Activate your virtual envirionment and once again install `dotenv` by entering
+```bash
+pip3 install dotenv
+```
+
+Now, here's the cool part, create a new `.env` in your project folder on the flip server. This time, it will look a bit different like this
+
+```bash
+340DBHOST=classmysql.engr.oregonstate.edu
+340DBUSER=cs340_lastnamef
+340DBPW=maybea4digitnumber
+340DB=cs340_lastnamef
+```
+
+You want to modify these values for each of your own purposes. Change out the relevant sections of your `.env` to fit your OSU credentials for the database.
+
+Save the file, and as long as everything went well. Run your server. You should be graced with a list of people from the bsg-people table if you go to the `/bsg-people` route.
+
+Thats it. Basically the `.env` acts like a little key for our deployments, locally or on OSU's servers. When the app loads on the flip, it uses the OSU credentials stored in the `.env` file on the flip. When the app loads on your local computer, it uses the credentials stored in the `.env` file on your computer.
+
+You no longer are storing sensitive information like database passwords and hostnames on GitHub for all to see. Is this the best security? No. You can encrypt your secrets, you can store them in other areas of the computer, you can even store them in the cloud and lease out the secrets when the app runs. It's way beyond the scope of this, but for those interested, here is some extra reading.
+
+[Best practices for managing and storing secrets including API keys and other credentials [2020]](https://blog.gitguardian.com/secrets-api-management/)
+
+Ideally, you would store the `.env` file somewhere completely out of your project. As long as you have permissions to the directory, you can modify the code in the `load_dotenv()` call to access it. This is just a taste of how to do it. It also sets you up for success with our last section.
