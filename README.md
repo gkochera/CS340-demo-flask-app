@@ -68,6 +68,7 @@ You can clone this repo as is, and it will run, so long as you have loaded the d
     - [Deploying the Migrated Project on OSUs Flip Server](#deploying-the-migrated-project-on-osus-flip-server)
   - [A Better Way to Store Database Credentials](#a-better-way-to-store-database-credentials)
     - [Environment Variables](#environment-variables)
+- [Extra Documentation](#extra-documentation)
 
 # Setup
 
@@ -1187,4 +1188,10 @@ You no longer are storing sensitive information like database passwords and host
 
 [Best practices for managing and storing secrets including API keys and other credentials [2020]](https://blog.gitguardian.com/secrets-api-management/)
 
-Ideally, you would store the `.env` file somewhere completely out of your project. As long as you have permissions to the directory, you can modify the code in the `load_dotenv()` call to access it. This is just a taste of how to do it. It also sets you up for success with our last section.
+Ideally, you would store the `.env` file somewhere completely out of your project. As long as you have permissions to the directory, you can modify the code in the `load_dotenv()` call to access it. This is just a taste of how to do it.
+
+# Extra Documentation
+
+- [Flask](https://flask.palletsprojects.com/en/1.1.x/)
+- [Jinja 2 Template Designer Documentation](https://jinja.palletsprojects.com/en/2.11.x/templates/)
+- [Git - The Simple Guide](https://rogerdudler.github.io/git-guide/)

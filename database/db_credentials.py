@@ -7,7 +7,7 @@
 # For Local Devlelopment
 host = 'localhost'
 user = 'root'                                   # can be different if you set up another username in your MySQL installation
-passwd = 'LxynRWbENw6F::ds'                     
+passwd = 'nottellingyou'                        # set accordingly
 db = 'bsg'
 
 
