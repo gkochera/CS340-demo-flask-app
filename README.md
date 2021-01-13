@@ -21,7 +21,7 @@ Dr. Curry and Prof. Safonte for allowing me the time to build the guide and proj
 
 ## Clone and Go
 
-You can clone this repo as is, and it will run, so long as you have loaded the data in `/database/bsg_db.sql` a properly configured MySQL database which is running, have a propertly configured `.env` file in the root of your project (same folder as `app.py`). You will also need to install the dependencies in `requirements.txt`.
+You can clone this repo as is, and it will run, so long as you have loaded the data from `/database/bsg_db.sql` to a properly configured MySQL database which is running, have a propertly configured `.env` file in the root of your project (same folder as `app.py`). You will also need to install the dependencies in `requirements.txt`.
 
 # Table of Contents
 
