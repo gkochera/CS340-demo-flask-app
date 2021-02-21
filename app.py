@@ -5,6 +5,7 @@ import database.db_connector as db
 # Configuration
 
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 db_connection = db.connect_to_database()
 
 # Routes 
